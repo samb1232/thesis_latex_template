@@ -1,0 +1,395 @@
+% !TeX program = xelatex
+\documentclass[a4paper,14pt]{extarticle}
+
+\usepackage{pdfpages}
+
+% Язык и основной шрифт.
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+
+\usepackage[main=russian,english]{babel}
+\emergencystretch=3em % растягивать пробелы при overfull
+% Поля страницы по требованиям ИнЭУ.
+\usepackage[
+  left=30mm,
+  right=10mm,
+  top=20mm,
+  bottom=20mm,
+  bindingoffset=0cm
+]{geometry}
+
+
+% Абзац, интервал и выравнивание текста.
+\usepackage{setspace}
+\onehalfspacing
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0pt}
+\usepackage{indentfirst}
+\usepackage{ragged2e}
+\usepackage{microtype}
+\justifying
+
+% Математика и формулы.
+\usepackage{amsmath}
+\usepackage[
+  math-style=TeX,
+  bold-style=TeX
+]{unicode-math}
+
+\setmathfont{TeX Gyre Termes Math}
+
+% Рисунки и таблицы.
+\usepackage{graphicx}
+\graphicspath{{fig/}}
+\usepackage{array,tabularx,multirow}
+\usepackage{float}
+\usepackage[table]{xcolor}
+
+
+% Единая нумерация рисунков, таблиц и формул внутри раздела.
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+\numberwithin{equation}{section}
+% Для сквозной нумерации закомментировать три строки выше.
+
+% Подписи рисунков и таблиц.
+\usepackage{caption}
+\DeclareCaptionLabelSeparator{vkrdash}{\space--\space}
+\captionsetup[figure]{
+  name=Рисунок,
+  labelsep=vkrdash,
+  justification=centering,
+  singlelinecheck=false,
+  position=bottom,
+  skip=6pt
+}
+\captionsetup[table]{
+  name=Таблица,
+  labelsep=vkrdash,
+  justification=raggedright,
+  singlelinecheck=false,
+  position=top,
+  skip=6pt
+}
+
+% Заголовки разделов и подразделов.
+\usepackage{titlesec}
+\titleformat{\section}[block]
+  {\normalfont\normalsize\bfseries\raggedright}
+  {\thesection}{1em}{}
+\titleformat{name=\section,numberless}[block]
+  {\normalfont\normalsize\bfseries\centering}
+  {}{0pt}{\MakeUppercase}
+\titleformat{\subsection}[block]
+  {\normalfont\normalsize\bfseries\raggedright}
+  {\thesubsection}{1em}{}
+\titleformat{\subsubsection}[block]
+  {\normalfont\normalsize\bfseries\raggedright}
+  {\thesubsubsection}{1em}{}
+
+
+% Интервалы до и после заголовков.
+\titlespacing*{\section}{\parindent}{\baselineskip}{0pt}
+\titlespacing*{name=\section,numberless}{0pt}{\baselineskip}{0pt}
+\titlespacing*{\subsection}{\parindent}{\baselineskip}{0pt}
+\titlespacing*{\subsubsection}{\parindent}{\baselineskip}{0pt}
+
+
+% Содержание.
+\usepackage{tocloft}
+\renewcommand{\contentsname}{СОДЕРЖАНИЕ}
+\addto\captionsrussian{\renewcommand{\contentsname}{СОДЕРЖАНИЕ}}
+\renewcommand{\cfttoctitlefont}{\hfill\normalfont\normalsize\bfseries}
+\renewcommand{\cftaftertoctitle}{\hfill}
+\setlength{\cftbeforetoctitleskip}{0pt}
+\setlength{\cftaftertoctitleskip}{\baselineskip}
+
+\renewcommand{\cftsecfont}{\normalfont}
+\renewcommand{\cftsecpagefont}{\normalfont}
+\renewcommand{\cftsubsecfont}{\normalfont}
+\renewcommand{\cftsubsecpagefont}{\normalfont}
+
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsubsecleader}{\cftdotfill{\cftdotsep}}
+
+% В содержание выводятся только section и subsection; subsubsection скрыты.
+\setcounter{tocdepth}{2}
+
+% Отступы в содержании: разделы без отступа, подразделы с отступом.
+\setlength{\cftbeforesecskip}{0pt}
+\setlength{\cftbeforesubsecskip}{0pt}
+\setlength{\cftsecindent}{0pt}
+\setlength{\cftsubsecindent}{2em}
+\setlength{\cftsubsubsecindent}{4em}
+
+
+% Списки.
+\usepackage{enumitem}
+\makeatletter
+\AddEnumerateCounter*{\asbuk}{\c@asbuk}{7}
+\makeatother
+\setlist[itemize]{
+  label=--,
+  leftmargin=1.25cm,
+  itemsep=0pt,
+  topsep=0pt
+}
+\setlist[enumerate,1]{
+  label=\arabic*),
+  leftmargin=1.25cm,
+  itemsep=0pt,
+  topsep=0pt
+}
+\setlist[enumerate,2]{
+  label=\asbuk*),
+  leftmargin=1.25cm,
+  itemsep=0pt,
+  topsep=0pt
+}
+
+% Библиография по ГОСТ-стилю biblatex.
+\usepackage{booktabs}
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=gost-numeric,
+  sorting=none,
+  autolang=other,
+  language=russian,
+  giveninits=true,
+  maxnames=3,
+  minnames=3,
+  doi=false,
+  isbn=false,
+  url=true,
+  eprint=false,
+  alldates=short
+]{biblatex}
+\addbibresource{src/references.bib}
+
+% Чтобы вместо «дата обр.» печаталось «дата обращения: ...»
+\DefineBibliographyStrings{russian}{
+  urlseen = {дата обращения}
+}
+\DeclareFieldFormat{urldate}{%
+  \mkbibparens{\bibstring{urlseen}\addcolon\space#1}%
+}
+
+% Убрать служебные поля из вывода списка.
+\AtEveryBibitem{
+  \clearfield{note}
+  \clearfield{abstract}
+  \clearfield{keywords}
+  \clearfield{isbn}{}
+}
+
+% =========================================================
+% Единый стиль библиографии: без курсива, жирного и т. д.
+% =========================================================
+
+% ----- 1. Глобальные обёртки biblatex -----
+% mkbibemph  — курсив (используется gost-numeric для имён и ряда полей)
+% mkbibbold  — полужирный (тома, номера конференций в некоторых стилях)
+% mkbibacro  — акронимы (DOI, URL, ISBN — обычно капитель)
+\renewcommand*{\mkbibemph}[1]{#1}
+\renewcommand*{\mkbibbold}[1]{#1}
+\renewcommand*{\mkbibacro}[1]{#1}
+
+% ----- 2. Части имён авторов -----
+\renewcommand*{\mkbibnamefamily}[1]{#1}
+\renewcommand*{\mkbibnamegiven}[1]{#1}
+\renewcommand*{\mkbibnameprefix}[1]{#1}
+\renewcommand*{\mkbibnamesuffix}[1]{#1}
+
+% ----- 3. Названия (заглавия) -----
+% Глобально — для типов, не перечисленных ниже
+\DeclareFieldFormat{title}{#1}
+\DeclareFieldFormat{booktitle}{#1}
+\DeclareFieldFormat{maintitle}{#1}
+\DeclareFieldFormat{journaltitle}{#1}
+\DeclareFieldFormat{issuetitle}{#1}
+\DeclareFieldFormat{series}{#1}
+\DeclareFieldFormat{eventtitle}{#1}
+% По типам записи — biblatex проверяет их раньше глобальных
+\DeclareFieldFormat[article]{title}{#1}
+\DeclareFieldFormat[book]{title}{#1}
+\DeclareFieldFormat[inbook]{title}{#1}
+\DeclareFieldFormat[incollection]{title}{#1}
+\DeclareFieldFormat[inproceedings]{title}{#1}
+\DeclareFieldFormat[online]{title}{#1}
+\DeclareFieldFormat[report]{title}{#1}
+\DeclareFieldFormat[thesis]{title}{#1}
+\DeclareFieldFormat[manual]{title}{#1}
+\DeclareFieldFormat[misc]{title}{#1}
+\DeclareFieldFormat[patent]{title}{#1}
+
+% ----- 4. Числовые и служебные поля -----
+% volume/number иногда выделяются жирным в gost-numeric
+\DeclareFieldFormat{volume}{#1}
+\DeclareFieldFormat{number}{#1}
+% edition: «2-е изд.» иногда курсивом
+\DeclareFieldFormat{edition}{#1}
+% pages: в некоторых версиях стиля — полужирный диапазон страниц
+\DeclareFieldFormat{pages}{#1}
+
+% ----- 5. Метка номера источника в списке — [1], [2] … -----
+\DeclareFieldFormat{labelnumberwidth}{#1\adddot}
+
+% ----- 6. URL и дата обращения -----
+% Без моноширинного шрифта
+\urlstyle{same}
+\renewcommand*{\UrlFont}{\normalfont}
+% «дата обращения: ДД.ММ.ГГГГ» в скобках
+\DefineBibliographyStrings{russian}{urlseen = {дата обращения}}
+\DeclareFieldFormat{urldate}{(\bibstring{urlseen}\addcolon\space#1)}
+
+% ----- 7. Принудительный сброс шрифта для всего блока -----
+\AtBeginBibliography{
+  \normalfont
+  \renewcommand{\emph}[1]{#1}%   % ← вот это
+
+  }
+
+% ----- 8. Убрать служебные поля из вывода -----
+\AtEveryBibitem{
+  \clearfield{note}
+  \clearfield{abstract}
+  \clearfield{keywords}
+  \ifentrytype{article}{\clearfield{isbn}}{}
+  \ifentrytype{inproceedings}{\clearfield{isbn}}{}
+}
+
+% ----- 9. Межстрочные интервалы в списке -----
+\setlength{\bibitemsep}{0pt}
+\setlength{\bibparsep}{0pt}
+
+% Ссылки и переносимые URL.
+\usepackage{xurl}
+% \usepackage[unicode]{hyperref}
+\usepackage[unicode,hidelinks]{hyperref} % - для ссылок без цветных рамоук
+
+% Нумерация страниц внизу по центру.
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyfoot[C]{\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+}
+
+%-----------------------------------------------------------
+
+% Структурные элементы ВКР без номера и с записью в содержание.
+\newcommand{\structsection}[1]{%
+  \clearpage
+  \phantomsection
+  \section*{#1}%
+  \addcontentsline{toc}{section}{\MakeUppercase{#1}}%
+}
+% Использовать так: \structsection{Введение}, \structsection{Заключение}.
+
+%-----------------------------------------------------------
+
+% Приложения: центрированный заголовок и отдельная нумерация объектов.
+\newcommand{\startappendices}{%
+  \appendix
+  \renewcommand{\thesection}{\Asbuk{section}}%
+  \renewcommand{\thefigure}{\thesection.\arabic{figure}}%
+  \renewcommand{\thetable}{\thesection.\arabic{table}}%
+  \renewcommand{\theequation}{\thesection.\arabic{equation}}%
+}
+\newcommand{\appendixsection}[1]{%
+  \clearpage
+  \refstepcounter{section}%
+  \setcounter{figure}{0}%
+  \setcounter{table}{0}%
+  \setcounter{equation}{0}%
+  \phantomsection
+  \addcontentsline{toc}{section}{ПРИЛОЖЕНИЕ \thesection}%
+  \begin{center}
+    \textbf{ПРИЛОЖЕНИЕ \thesection}\\[2\baselineskip]
+    \textbf{#1}
+  \end{center}
+}
+% Использовать так: \startappendices \appendixsection{Название приложения}.
+
+
+% Заголовок библиографии как структурный элемент.
+\defbibheading{vkrbib}{%
+  \clearpage
+  \phantomsection
+  \section*{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}%
+  \addcontentsline{toc}{section}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}%
+}
+% Печатать список так: \printbibliography[heading=vkrbib]
+
+
+
+% Таблицы по ГОСТ: перенос, ячейки, примечания, альбомные страницы, числовые столбцы.
+\usepackage{longtable}
+\usepackage{makecell}
+\usepackage{etoolbox}
+\usepackage{threeparttable}
+\usepackage{pdflscape}
+\usepackage{siunitx}
+
+%% Подпись: «Таблица 1 -- Название» слева над таблицей, без точки в конце.
+\DeclareCaptionLabelSeparator{gostdash}{ -- }
+\captionsetup[table]{
+    name=Таблица,
+    labelsep=gostdash,
+    justification=raggedright,
+    singlelinecheck=false,
+    position=top,
+    skip=6pt,
+    font={normalsize,stretch=1}
+}
+\captionsetup[longtable]{
+    name=Таблица,
+    labelsep=gostdash,
+    justification=raggedright,
+    singlelinecheck=false,
+    position=top,
+    skip=6pt,
+    font={normalsize,stretch=1}
+}
+
+%% Текст в таблицах: одинарный интервал, кегль меньше основного, но не менее 10 pt.
+%% В классе 14 pt команда \small обычно дает около 12 pt.
+\AtBeginEnvironment{tabular}{\small\singlespacing\renewcommand{\arraystretch}{1}}
+\AtBeginEnvironment{tabularx}{\small\singlespacing\renewcommand{\arraystretch}{1}}
+\AtBeginEnvironment{longtable}{\small\singlespacing\renewcommand{\arraystretch}{1}}
+
+%% Отступы и переносимые таблицы.
+\setlength{\tabcolsep}{4pt}
+\setlength{\LTpre}{0pt}
+\setlength{\LTpost}{0pt}
+
+%% Ячейки и заголовки: центр для заголовков граф, обычное начертание, без точек в конце.
+\renewcommand\theadfont{\normalfont}
+\renewcommand\theadalign{cc}
+\renewcommand\cellalign{tl}
+\setcellgapes{2pt}
+\makegapedcells
+
+%% Типы столбцов: L — влево, C — по центру, R — вправо.
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+%% Числа: десятичная запятая и выравнивание по разрядам в столбцах S.
+\sisetup{
+    detect-all,
+    output-decimal-marker={,},
+    group-separator={\,},
+    group-minimum-digits=4,
+    table-number-alignment=right
+}
+
+%% Продолжение таблицы при переносе longtable на следующую страницу.
+\newcommand{\vkrtablecontinued}{\caption*{Продолжение таблицы \thetable}}

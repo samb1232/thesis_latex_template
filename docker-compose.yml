@@ -1,0 +1,7 @@
+services:
+  latex:
+    build: .
+    volumes:
+      - .:/workdir
+    working_dir: /workdir
+    command: "latexmk -pvc ./src/main.tex"
